@@ -1,7 +1,5 @@
 # CrisisPilot
 
-# CrisisPilot
-
 AI-Powered Supply Chain Crisis Intelligence Platform
 
 ## Overview
@@ -470,59 +468,5 @@ This prevents platform downtime during API outages.
 # Team
 
 CrisisPilot was developed as an intelligent crisis response platform focused on operational resilience, supply chain continuity, and AI-assisted decision making.
-
-Architecture Diagrams
-C4 Level 1 — System Context
-
-┌──────────────────────┐
-│ Enterprise Users     │
-│ Logistics Teams      │
-│ Government Agencies  │
-└──────────┬───────────┘
-           │
-           ▼
-┌────────────────────────────────────┐
-│            CrisisPilot             │
-│ AI Crisis Intelligence Platform    │
-└──────────┬─────────────────────────┘
-           │
- ┌─────────┼─────────┐
- ▼         ▼         ▼
-RSS      Gemini    Elasticsearch
-Feeds      AI         Search
-           │
-           ▼
-        MongoDB
-
-
-C4 Level 2 — Container Diagram
-
-┌──────────────────────────────────────────────┐
-│                Frontend                      │
-│ React + TypeScript + Vite                    │
-└─────────────────┬────────────────────────────┘
-                  │ REST API
-                  ▼
-┌──────────────────────────────────────────────┐
-│                FastAPI Backend               │
-│                                              │
-│ - Event Management                           │
-│ - Search                                     │
-│ - Crisis Analysis                            │
-│ - RSS Ingestion                              │
-└─────────────┬───────────────┬────────────────┘
-              │               │
-              ▼               ▼
-       ┌─────────────┐  ┌─────────────┐
-       │ MongoDB     │  │Elasticsearch│
-       │ Event Store │  │ Similarity  │
-       └──────┬──────┘  └──────┬──────┘
-              │                │
-              └──────┬─────────┘
-                     ▼
-              ┌─────────────┐
-              │ Gemini AI   │
-              │ Analysis    │
-              └─────────────┘
 
 
