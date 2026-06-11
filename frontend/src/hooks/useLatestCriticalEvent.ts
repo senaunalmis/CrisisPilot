@@ -23,10 +23,15 @@ export const useLatestCriticalEvent = () => {
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       )
       
-      return criticalEvents[0]
+      return criticalEvents.find(
+        e =>
+          e.analysis?.recommended_hubs?.length ||
+          e.analysis?.top_actions?.length
+      ) ?? criticalEvents[0]
     },
     refetchOnWindowFocus: false,
     retry: 1,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000, 
+    refetchInterval: 30000,
   })
 }

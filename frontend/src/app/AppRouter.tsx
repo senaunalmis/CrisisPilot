@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { TopAppBar, SideNavBar } from '@/shared/layout'
 import { Dashboard } from '@/pages/Dashboard'
 import { Events } from '@/pages/Events'
-import { AnalysisDetail } from '@/pages/AnalysisDetail'
+import { ImpactAnalysis } from '@/pages/ImpactAnalysis'
 import { SimulationDetail } from '@/pages/SimulationDetail'
 import { ResponsePlan } from '@/pages/ResponsePlan'
 
@@ -15,9 +15,9 @@ export const AppRouter = () => {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/analysis/:id" element={<AnalysisDetail />} />
+          <Route path="/analysis" element={<ImpactAnalysis />} />
           <Route path="/simulation/:id" element={<SimulationDetail />} />
-          <Route path="/response" element={<ResponsePlan />} />
+          <Route path="/response/" element={<ResponsePlan />} />
         </Routes>
       </div>
     </div>

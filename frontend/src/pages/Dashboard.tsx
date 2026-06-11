@@ -83,23 +83,31 @@ export const Dashboard = () => {
     status: 'active' as const,
   }))
 
-  const escalations: Escalation[] = metrics.recentEscalations.map(
-    (escalation, index) => {
-      const level = escalation.level.toLowerCase()
+const escalations: Escalation[] = [...metrics.recentEscalations]
+    .reverse() // 1. Listeyi en yeni en üstte olacak şekilde ters çeviriyoruz
+    .map((escalation, index) => {
+      // Backend'den gelen veriyi güvenli bir şekilde alıyoruz
+      const level = escalation.level?.toLowerCase() || ''
+      
+      // TypeScript hatasını önlemek için tipi kesin olarak belirtiyoruz
+      let severity: 'critical' | 'elevated' | 'normal' ='normal'
+
+      // Renklendirme Mantığı:
+      if (index === 0) {
+        severity = 'critical' // UI'da en üstte duran (index 0) her zaman kırmızı (critical) olsun
+      } 
+      else if (level.includes('high')) {
+        severity = 'elevated' // Diğerleri kendi verisinde high geçiyorsa yüksek (örn. turuncu) olsun
+      }
 
       return {
         id: `ESC-${String(index + 1).padStart(3, '0')}`,
         title: escalation.title,
         description: 'Recent escalation detected',
         timestamp: 'Recent',
-        severity: level.includes('critical')
-          ? 'critical'
-          : level.includes('high')
-          ? 'elevated'
-          : 'normal',
+        severity,
       }
-    }
-  )
+    })
 
   // Keep mock data for components not provided by backend
   const agentSteps = events.slice(0, 4).map((event) => ({
@@ -114,7 +122,7 @@ export const Dashboard = () => {
 
     timestamp: new Date(event.timestamp)
       .toLocaleTimeString(),
-  }))
+  })).reverse()
 
   const highRiskRegions = events
 
