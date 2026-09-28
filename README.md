@@ -10,6 +10,71 @@ The system continuously ingests live news feeds, identifies potential supply cha
 
 Unlike traditional news monitoring tools, CrisisPilot focuses on operational decision support rather than information aggregation.
 
+## Setup and Running (Windows)
+
+### Requirements
+
+- Node.js LTS and npm
+- Python 3.11 or later
+- Docker Desktop (for MongoDB and Elasticsearch), or accessible installations of these services
+- A Gemini API key (for AI analysis and simulation requests)
+
+### 1. Start MongoDB and Elasticsearch
+
+With Docker Desktop running, execute these commands once in PowerShell:
+
+```powershell
+docker run -d --name crisispilot-mongo -p 27017:27017 mongo:7
+docker run -d --name crisispilot-es -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+```
+
+On subsequent runs, start the existing containers with:
+
+```powershell
+docker start crisispilot-mongo crisispilot-es
+```
+
+### 2. Set up and start the backend
+
+In a new PowerShell terminal:
+
+```powershell
+cd backend
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt pymongo "elasticsearch<9"
+```
+
+Create `backend/.env` and enter your Gemini API key:
+
+```dotenv
+GEMINI_API_KEY=buraya_gemini_api_anahtariniz
+MONGODB_URI=mongodb://localhost:27017
+```
+
+Then, still from the `backend` directory, start the API:
+
+```powershell
+uvicorn app.main:app --reload --port 8000
+```
+
+Elasticsearch must be reachable for the backend to start. `GEMINI_API_KEY` is required for analysis and simulation requests. If you use MongoDB Atlas, replace `MONGODB_URI` with your Atlas connection string.
+
+### 3. Set up and start the frontend
+
+In a second PowerShell terminal:
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+The app is available at `http://localhost:3000`. Vite proxies `/api` requests to the backend at `http://localhost:8000`. The backend health check is at `http://localhost:8000/`, and the API documentation is at `http://localhost:8000/docs`.
+
+The frontend does not require a `.env.local` file. Do not put secrets in the frontend; Git ignores `backend/.env`.
+
 ---
 
 # Problem
